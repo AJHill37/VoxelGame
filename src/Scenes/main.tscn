@@ -1,6 +1,20 @@
 [gd_scene format=3 uid="uid://c3306vupujsi0"]
 
 [ext_resource type="Script" path="res://src/Game/Game.cs" id="1_game"]
+[ext_resource type="Script" path="res://src/Game/GameEnvironment.cs" id="2_env"]
+[ext_resource type="Script" path="res://src/Game/GameTerrain.cs" id="3_terrain"]
+[ext_resource type="Script" path="res://src/Player/Player.cs" id="4_player"]
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1_game")
+
+[node name="GameEnvironment" type="Node3D" parent="."]
+script = ExtResource("2_env")
+
+[node name="GameTerrain" type="Node3D" parent="."]
+script = ExtResource("3_terrain")
+
+[node name="Player" type="CharacterBody3D" parent="."]
+position = Vector3(0, 12, 0)
+script = ExtResource("4_player")
+PlaceBlockId = 2

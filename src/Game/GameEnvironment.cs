@@ -1,8 +1,8 @@
 using Godot;
 
-public partial class Game
+public partial class GameEnvironment : Node3D
 {
-    private void SetupEnvironment()
+    public override void _Ready()
     {
         var skyMat = new ProceduralSkyMaterial
         {
@@ -21,12 +21,11 @@ public partial class Game
         };
         AddChild(new WorldEnvironment { Environment = env });
 
-        var sun = new DirectionalLight3D
+        AddChild(new DirectionalLight3D
         {
             RotationDegrees = new Vector3(-55f, 40f, 0f),
             ShadowEnabled = true,
             LightEnergy = 1.2f,
-        };
-        AddChild(sun);
+        });
     }
 }

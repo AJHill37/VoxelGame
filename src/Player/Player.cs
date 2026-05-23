@@ -9,7 +9,7 @@ public partial class Player : CharacterBody3D
     [Export] public float Reach = 8.0f;
 
     public VoxelTerrain Terrain { get; set; }
-    public int PlaceBlockId { get; set; } = 2;
+    [Export] public int PlaceBlockId { get; set; } = BlockIds.StoneId;
 
     public override void _Ready()
     {

@@ -1,11 +1,11 @@
 using Godot;
 
-public partial class Game
+public partial class GameTerrain : Node3D
 {
-    private void SetupTerrain()
-    {
-        _terrain = new VoxelTerrain { Name = "VoxelTerrain" };
+    public VoxelTerrain Terrain { get; private set; }
 
+    public override void _Ready()
+    {
         var library = new VoxelBlockyLibrary();
         var fullCube = new Godot.Collections.Array<Aabb> { new Aabb(Vector3.Zero, Vector3.One) };
 
@@ -33,19 +33,21 @@ public partial class Game
         stone.SetMaterialOverride(0, sharedMat);
         library.AddModel(stone);
 
-        _terrain.Mesher = new VoxelMesherBlocky { Library = library };
-
-        _terrain.Generator = new VoxelGeneratorFlat
+        Terrain = new VoxelTerrain
         {
-            // VoxelBuffer.CHANNEL_TYPE (0) — blocky meshes read TYPE, not the default SDF channel
-            Channel = 0,
-            VoxelType = BlockIds.GrassId,
-            Height = 4,
+            Name = "VoxelTerrain",
+            Mesher = new VoxelMesherBlocky { Library = library },
+            Generator = new VoxelGeneratorFlat
+            {
+                // VoxelBuffer.CHANNEL_TYPE (0) — blocky meshes read TYPE, not the default SDF channel
+                Channel = 0,
+                VoxelType = BlockIds.GrassId,
+                Height = 4,
+            },
+            GenerateCollisions = true,
+            MaxViewDistance = 128,
         };
 
-        _terrain.GenerateCollisions = true;
-        _terrain.MaxViewDistance = 128;
-
-        AddChild(_terrain);
+        AddChild(Terrain);
     }
 }
