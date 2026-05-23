@@ -4,6 +4,7 @@
 [ext_resource type="Script" path="res://src/Game/GameEnvironment.cs" id="2_env"]
 [ext_resource type="Script" path="res://src/Game/GameTerrain.cs" id="3_terrain"]
 [ext_resource type="Script" path="res://src/Player/Player.cs" id="4_player"]
+[ext_resource type="Script" path="res://src/Player/PlayerBody.cs" id="5_body"]
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1_game")
@@ -18,3 +19,6 @@ script = ExtResource("3_terrain")
 position = Vector3(0, 12, 0)
 script = ExtResource("4_player")
 PlaceBlockId = 2
+
+[node name="PlayerBody" type="Node3D" parent="Player"]
+script = ExtResource("5_body")

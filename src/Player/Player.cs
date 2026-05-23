@@ -26,17 +26,6 @@ public partial class Player : CharacterBody3D
             Shape = new CapsuleShape3D { Radius = 0.4f, Height = 1.8f },
             Position = new Vector3(0f, 0.9f, 0f),
         });
-
-        AddChild(new MeshInstance3D
-        {
-            Mesh = new CapsuleMesh { Radius = 0.4f, Height = 1.8f },
-            Position = new Vector3(0f, 0.9f, 0f),
-            MaterialOverride = new StandardMaterial3D
-            {
-                AlbedoColor = new Color(0.95f, 0.55f, 0.20f),
-                Roughness = 0.7f,
-            },
-        });
     }
 
     public override void _UnhandledInput(InputEvent @event)
