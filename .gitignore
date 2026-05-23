@@ -1,5 +1,10 @@
 # Godot 4+ specific ignores
 .godot/
+.vscode/
+builds/
+
+# vim ignores
+.vimspector.json
 .nomedia
 
 # Godot-specific ignores
