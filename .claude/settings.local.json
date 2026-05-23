@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls \"c:\\\\Users\\\\rurik\\\\Godot\\\\Projects\\\\aj-voxel-proj\" -la 2>/dev/null; echo \"---\"; ls \"c:\\\\Users\\\\rurik\\\\Godot\\\\Projects\\\\aj-voxel-proj\\\\..\" 2>/dev/null)",
+      "Read(//c/Users/rurik/Godot/Projects/**)",
+      "WebFetch(domain:voxel-tools.readthedocs.io)",
+      "WebSearch",
+      "WebFetch(domain:github.com)"
+    ]
+  }
+}

@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://c3306vupujsi0"]
+
+[ext_resource type="Script" path="res://Game.cs" id="1_game"]
+
+[node name="AjTestScene" type="Node3D"]
+script = ExtResource("1_game")
