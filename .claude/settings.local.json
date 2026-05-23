@@ -5,7 +5,11 @@
       "Read(//c/Users/rurik/Godot/Projects/**)",
       "WebFetch(domain:voxel-tools.readthedocs.io)",
       "WebSearch",
-      "WebFetch(domain:github.com)"
+      "WebFetch(domain:github.com)",
+      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\rurik\\\\Godot\\\\Projects\\\\VoxelGame\")",
+      "Bash(Select-Object Name, PSIsContainer)",
+      "Bash(Format-Table -AutoSize)",
+      "Bash(git mv *)"
     ]
   }
 }
