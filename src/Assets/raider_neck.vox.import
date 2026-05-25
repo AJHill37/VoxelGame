@@ -1,0 +1,17 @@
+[remap]
+
+importer="VoxelVoxSceneImporter"
+type="PackedScene"
+uid="uid://cy6jvjtfop27r"
+path="res://.godot/imported/raider_neck.vox-9377fa7e4b445fc12584db0297996291.tscn"
+
+[deps]
+
+source_file="res://src/Assets/raider_neck.vox"
+dest_files=["res://.godot/imported/raider_neck.vox-9377fa7e4b445fc12584db0297996291.tscn"]
+
+[params]
+
+store_colors_in_texture=false
+scale=1.0
+enable_baked_lighting=true

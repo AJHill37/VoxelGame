@@ -1,0 +1,17 @@
+[remap]
+
+importer="VoxelVoxSceneImporter"
+type="PackedScene"
+uid="uid://clipy4b4tk3t8"
+path="res://.godot/imported/raider.vox-da1f15fb6dfeae6889a0d37c7258dac8.tscn"
+
+[deps]
+
+source_file="res://src/Assets/raider.vox"
+dest_files=["res://.godot/imported/raider.vox-da1f15fb6dfeae6889a0d37c7258dac8.tscn"]
+
+[params]
+
+store_colors_in_texture=false
+scale=1.0
+enable_baked_lighting=true

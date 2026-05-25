@@ -16,7 +16,8 @@
       "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\rurik\\\\Godot\\\\Projects\\\\VoxelGame\" -Recurse -Include \"*.csproj\", \"*.sln\", \"project.godot\")",
       "PowerShell(New-Item -ItemType Directory -Force \"c:\\\\Users\\\\rurik\\\\Godot\\\\Projects\\\\VoxelGame\\\\src\\\\Entities\")",
       "Bash(dotnet build *)",
-      "Bash(powershell -Command \"Get-ChildItem raider_*.vox | Select-Object Name, Length\")"
+      "Bash(powershell -Command \"Get-ChildItem raider_*.vox | Select-Object Name, Length\")",
+      "Bash(Remove-Item \"c:\\\\Users\\\\rurik\\\\Godot\\\\Projects\\\\VoxelGame\\\\src\\\\VoxReader.cs\")"
     ]
   }
 }

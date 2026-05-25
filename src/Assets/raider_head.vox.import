@@ -1,0 +1,17 @@
+[remap]
+
+importer="VoxelVoxSceneImporter"
+type="PackedScene"
+uid="uid://bomnaahfg4l5r"
+path="res://.godot/imported/raider_head.vox-e3fe3a4080022eb1b673b5ef3ed6e936.tscn"
+
+[deps]
+
+source_file="res://src/Assets/raider_head.vox"
+dest_files=["res://.godot/imported/raider_head.vox-e3fe3a4080022eb1b673b5ef3ed6e936.tscn"]
+
+[params]
+
+store_colors_in_texture=false
+scale=1.0
+enable_baked_lighting=true

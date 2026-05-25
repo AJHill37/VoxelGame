@@ -1,0 +1,17 @@
+[remap]
+
+importer="VoxelVoxSceneImporter"
+type="PackedScene"
+uid="uid://cn2tjwxe7pfxx"
+path="res://.godot/imported/raider_foot_r.vox-1063f07380354759f11ec8149b69e070.tscn"
+
+[deps]
+
+source_file="res://src/Assets/raider_foot_r.vox"
+dest_files=["res://.godot/imported/raider_foot_r.vox-1063f07380354759f11ec8149b69e070.tscn"]
+
+[params]
+
+store_colors_in_texture=false
+scale=1.0
+enable_baked_lighting=true
