@@ -2,11 +2,11 @@ using Godot;
 
 public partial class Player : CharacterBody3D
 {
-    [Export] public float Speed = 5.0f;
+    [Export] public float Speed = 15.0f;
     [Export] public float JumpVelocity = 6.5f;
     [Export] public float MouseSensitivity = 0.003f;
     [Export] public float CameraDistance = 4.0f;
-    [Export] public float Reach = 8.0f;
+    [Export] public float Reach = 10.0f;
 
     public VoxelTerrain Terrain { get; set; }
     [Export] public int PlaceBlockId { get; set; } = BlockIds.StoneId;
@@ -23,8 +23,8 @@ public partial class Player : CharacterBody3D
     {
         AddChild(new CollisionShape3D
         {
-            Shape = new CapsuleShape3D { Radius = 0.4f, Height = 1.8f },
-            Position = new Vector3(0f, 0.9f, 0f),
+            Shape = new CapsuleShape3D { Radius = 0.4f, Height = 2.0f },
+            Position = new Vector3(0f, 1.0f, 0f),
         });
     }
 

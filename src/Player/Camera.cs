@@ -11,7 +11,7 @@ public partial class Player
 
     private void SetupCameraRig()
     {
-        _yawPivot = new Node3D { Position = new Vector3(0f, 1.6f, 0f) };
+        _yawPivot = new Node3D { Position = new Vector3(0f, 1.8f, 0f) };
         AddChild(_yawPivot);
 
         _pitchPivot = new Node3D();

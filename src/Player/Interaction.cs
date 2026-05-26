@@ -85,7 +85,7 @@ public partial class Player
         var placePos = (Vector3I)hit.Get("previous_position");
 
         // Avoid trapping the player inside the placed block
-        var playerAabb = new Aabb(GlobalPosition - new Vector3(0.4f, 0f, 0.4f), new Vector3(0.8f, 1.8f, 0.8f));
+        var playerAabb = new Aabb(GlobalPosition - new Vector3(0.4f, 0f, 0.4f), new Vector3(0.8f, 2.0f, 0.8f));
         if (playerAabb.Intersects(new Aabb(new Vector3(placePos.X, placePos.Y, placePos.Z), Vector3.One))) return;
 
         tool.SetVoxel(placePos, (ulong)PlaceBlockId);

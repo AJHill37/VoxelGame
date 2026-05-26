@@ -2,115 +2,100 @@ using Godot;
 
 public partial class PlayerBody : Node3D
 {
+    [Export] public float VoxelScale = 0.0174f;
+    [Export] public float AnimationSpeed = 8.0f;
+
+    private Node3D _head, _neck, _torso, _legs;
+    private Node3D _handL, _handR, _footL, _footR;
+    private Vector3 _handLRest, _handRRest, _footLRest, _footRRest;
+    private float _walkPhase;
     private Player _player;
 
-    private Node3D _torso;
-    private Node3D _head;
-    private Node3D _handL, _handR;
-    private Node3D _legPiece;
-    private Node3D _footL, _footR;
-
-    private float _walkPhase;
-    private float _bodyYaw;
-
-    // Dwarf proportions: squat, barrel-chested, almost no legs.
-    // Torso width (0.76) nearly matches head width (0.64) — both dominate the silhouette.
-    // Total visual height ~1.35 units inside the 1.8-unit collision capsule.
-    private static readonly Vector3 HeadBase     = new( 0.00f, 1.32f,  0.00f);
-    private static readonly Vector3 TorsoBase    = new( 0.00f, 0.78f,  0.00f);
-    private static readonly Vector3 HandLBase    = new(-0.64f, 0.65f,  0.00f);
-    private static readonly Vector3 HandRBase    = new( 0.64f, 0.65f,  0.00f);
-    private static readonly Vector3 LegPieceBase = new( 0.00f, 0.40f,  0.00f);
-    private static readonly Vector3 FootLBase    = new(-0.22f, 0.10f,  0.00f);
-    private static readonly Vector3 FootRBase    = new( 0.22f, 0.10f,  0.00f);
+    private static readonly (string File, int Tx, int Ty, int Tz, int Sx, int Sy, int Sz, string Part)[] PartDefs =
+    {
+        ("res://src/Assets/raider_head.vox",    0,  -5, 99, 40, 36, 32, "head"),
+        ("res://src/Assets/raider_neck.vox",    0,  -2, 79, 16, 16,  8, "neck"),
+        ("res://src/Assets/raider_torso.vox",   0,  -3, 61, 56, 32, 32, "torso"),
+        ("res://src/Assets/raider_hand_r.vox",  30, -4, 41, 12, 12, 16, "hand_r"),
+        ("res://src/Assets/raider_hand_l.vox", -30, -4, 41, 12, 12, 16, "hand_l"),
+        ("res://src/Assets/raider_legs.vox",    0,  -3, 31, 40, 32, 28, "legs"),
+        ("res://src/Assets/raider_foot_r.vox",  13, -7,  4, 16, 32,  8, "foot_r"),
+        ("res://src/Assets/raider_foot_l.vox", -12, -7,  4, 16, 32,  8, "foot_l"),
+    };
 
     public override void _Ready()
     {
         _player = GetParent<Player>();
-        Build();
-    }
 
-    private void Build()
-    {
-        // Head — large and wide, nearly as wide as the torso
-        _head = Pivot(HeadBase);
-        AddChild(_head);
-        _head.AddChild(Box(new Vector3(0.64f, 0.58f, 0.58f), new Color(0.92f, 0.75f, 0.60f)));
+        foreach (var (file, tx, ty, tz, sx, sy, sz, part) in PartDefs)
+        {
+            var scene    = ResourceLoader.Load<PackedScene>(file);
+            var instance = scene.Instantiate<Node3D>();
 
-        // Torso — barrel chest, the dominant feature; very wide and deep
-        _torso = Pivot(TorsoBase);
-        AddChild(_torso);
-        _torso.AddChild(Box(new Vector3(0.76f, 0.48f, 0.44f), new Color(0.35f, 0.45f, 0.75f)));
+            instance.Scale           = new Vector3(VoxelScale, VoxelScale, -VoxelScale);
+            instance.RotationDegrees = new Vector3(0f, -90f, 0f);
+            instance.Position = new Vector3(
+                -(sx / 2f) * VoxelScale,
+                -(sz / 2f) * VoxelScale,
+                -(sy / 2f) * VoxelScale);
 
-        // Hands — large floating fists, pulled wide and low (dwarf arms are short but hands are big)
-        _handL = Pivot(HandLBase);
-        AddChild(_handL);
-        _handL.AddChild(Box(new Vector3(0.28f, 0.28f, 0.28f), new Color(0.92f, 0.75f, 0.60f)));
+            var pivot = new Node3D
+            {
+                Name     = part,
+                Position = new Vector3(tx * VoxelScale, tz * VoxelScale, ty * VoxelScale),
+            };
 
-        _handR = Pivot(HandRBase);
-        AddChild(_handR);
-        _handR.AddChild(Box(new Vector3(0.28f, 0.28f, 0.28f), new Color(0.92f, 0.75f, 0.60f)));
+            AddChild(pivot);
+            pivot.AddChild(instance);
 
-        // Leg piece — almost vestigial; very wide and flat, barely there
-        _legPiece = Pivot(LegPieceBase);
-        AddChild(_legPiece);
-        _legPiece.AddChild(Box(new Vector3(0.66f, 0.20f, 0.38f), new Color(0.22f, 0.22f, 0.42f)));
+            switch (part)
+            {
+                case "head":   _head  = pivot; break;
+                case "neck":   _neck  = pivot; break;
+                case "torso":  _torso = pivot; break;
+                case "hand_r": _handR = pivot; break;
+                case "hand_l": _handL = pivot; break;
+                case "legs":   _legs  = pivot; break;
+                case "foot_r": _footR = pivot; break;
+                case "foot_l": _footL = pivot; break;
+            }
+        }
 
-        // Feet — wide, flat boots; spread to match the leg piece width
-        _footL = Pivot(FootLBase);
-        AddChild(_footL);
-        _footL.AddChild(Box(new Vector3(0.32f, 0.15f, 0.44f), new Color(0.18f, 0.14f, 0.11f)));
-
-        _footR = Pivot(FootRBase);
-        AddChild(_footR);
-        _footR.AddChild(Box(new Vector3(0.32f, 0.15f, 0.44f), new Color(0.18f, 0.14f, 0.11f)));
+        CaptureRestPositions();
     }
 
     public override void _Process(double delta)
     {
-        var vel = _player.Velocity;
-        var hSpeed = new Vector2(vel.X, vel.Z).Length();
-
-        if (hSpeed > 0.5f)
-        {
-            var targetYaw = Mathf.Atan2(-vel.X, -vel.Z);
-            _bodyYaw = Mathf.LerpAngle(_bodyYaw, targetYaw, (float)delta * 10f);
-        }
-        Rotation = new Vector3(0f, _bodyYaw, 0f);
-
-        _walkPhase += hSpeed * (float)delta * 2.5f;
-
+        var vel      = _player.Velocity;
+        var hSpeed   = new Vector2(vel.X, vel.Z).Length();
         var swingScale = Mathf.Clamp(hSpeed / _player.Speed, 0f, 1f);
-        var swing = Mathf.Sin(_walkPhase) * swingScale;
 
-        // Counter-twist: heavy torso rotates opposite the leg piece
-        _torso.Rotation    = new Vector3(0f, -swing * 0.20f, 0f);
-        _legPiece.Rotation = new Vector3(0f,  swing * 0.35f, 0f);
+        float targetYaw = hSpeed > 0.5f ? Mathf.Atan2(-vel.X, -vel.Z) : Rotation.Y;
+        float yaw       = Mathf.LerpAngle(Rotation.Y, targetYaw, (float)delta * 10f);
+        float lean      = Mathf.Lerp(Rotation.X, -swingScale * 0.25f, (float)delta * 8f);
+        Rotation = new Vector3(lean, yaw, 0f);
 
-        // Bob is subtle — dwarves are heavy
-        var bob = Mathf.Sin(_walkPhase * 2f) * 0.018f * swingScale;
-        _torso.Position = TorsoBase with { Y = TorsoBase.Y + bob };
-        _head.Position  = HeadBase  with { Y = HeadBase.Y  + bob };
+        if (hSpeed > 0.1f)
+            _walkPhase += AnimationSpeed * (float)delta;
 
-        // Feet waddle — short stride, exaggerated tilt
-        _footL.Position = FootLBase with { Z =  swing * 0.22f };
-        _footR.Position = FootRBase with { Z = -swing * 0.22f };
-        _footL.Rotation = new Vector3( swing * 0.50f, 0f, 0f);
-        _footR.Rotation = new Vector3(-swing * 0.50f, 0f, 0f);
+        float swing = Mathf.Sin(_walkPhase) * swingScale;
 
-        // Hands swing low and wide
-        _handL.Position = HandLBase with { Z = -swing * 0.20f };
-        _handR.Position = HandRBase with { Z =  swing * 0.20f };
-        _handL.Rotation = new Vector3(-swing * 0.40f, 0f, 0f);
-        _handR.Rotation = new Vector3( swing * 0.40f, 0f, 0f);
+        if (_handL != null)
+            _handL.Position = _handLRest with { Z = _handLRest.Z - swing * 0.28f };
+        if (_handR != null)
+            _handR.Position = _handRRest with { Z = _handRRest.Z + swing * 0.28f };
+
+        if (_footL != null)
+            _footL.Position = _footLRest with { Z = _footLRest.Z + swing * 0.28f };
+        if (_footR != null)
+            _footR.Position = _footRRest with { Z = _footRRest.Z - swing * 0.28f };
     }
 
-    private static Node3D Pivot(Vector3 position) => new Node3D { Position = position };
-
-    private static MeshInstance3D Box(Vector3 size, Color color) =>
-        new MeshInstance3D
-        {
-            Mesh = new BoxMesh { Size = size },
-            MaterialOverride = new StandardMaterial3D { AlbedoColor = color, Roughness = 0.9f },
-        };
+    private void CaptureRestPositions()
+    {
+        if (_handL != null) _handLRest = _handL.Position;
+        if (_handR != null) _handRRest = _handR.Position;
+        if (_footL != null) _footLRest = _footL.Position;
+        if (_footR != null) _footRRest = _footR.Position;
+    }
 }
